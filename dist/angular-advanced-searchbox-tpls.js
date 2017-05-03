@@ -190,7 +190,6 @@ angular.module('angular-advanced-searchbox', [])
                         if(searchParam.dynamic) {
                             return searchParam.dynamicFunction(keyword).then(function(response){
                               return response;
-                              });
                             });   
                         } else {
                             return $filter('filter')(searchParam.suggestedValues, keyword);
