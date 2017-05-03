@@ -189,8 +189,7 @@ angular.module('angular-advanced-searchbox', [])
                     $scope.dynamicList = function(searchParam, keyword) {
                         if(searchParam.dynamic) {
                             return searchParam.dynamicFunction(keyword).then(function(response){
-                              return response.map(function(item){
-                                return item.name;
+                              return response;
                               });
                             });   
                         } else {
