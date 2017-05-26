@@ -1,9 +1,9 @@
 {
   "name": "angular-advanced-searchbox",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "homepage": "https://github.com/dnauck/angular-advanced-searchbox",
   "authors": [
-    "Daniel Nauck <d.nauck@nauck-it.de>"
+    "Daniel Nauck <d.nauck@nauck-it.de>", "Qing Tian <tianqing1107@outlook.com>"
   ],
   "description": "A directive for AngularJS providing a advanced visual search box",
   "main": [
