@@ -315,6 +315,7 @@ angular.module('angular-advanced-searchbox', [])
                     }
 
                     function updateModel(command, key, index, value) {
+                        var throttleTime = $scope.searchThrottleTime;
                         if (searchThrottleTimer)
                             $timeout.cancel(searchThrottleTimer);
 
@@ -328,13 +329,15 @@ angular.module('angular-advanced-searchbox', [])
                             value: value
                         });
 
+                        if (command === 'change' && key === 'query' && isNaN(value)) {
+                            throttleTime = $scope.searchThrottleTime * 100;
+                        }
                         searchThrottleTimer = $timeout(function () {
                             angular.forEach(changeBuffer, function (change) {
                                 var searchParam = $filter('filter')($scope.parameters, function (param) { return param.key === key; })[0];
                                 if(searchParam && searchParam.allowMultiple){
                                     if(!angular.isArray($scope.model[change.key]))
                                         $scope.model[change.key] = [];
-
                                     if(change.command === 'delete'){
                                         $scope.model[change.key].splice(change.index, 1);
                                         if($scope.model[change.key].length === 0)
@@ -351,10 +354,9 @@ angular.module('angular-advanced-searchbox', [])
                             });
 
                             changeBuffer.length = 0;
-
                             $scope.$emit('advanced-searchbox:modelUpdated', $scope.model);
 
-                        }, $scope.searchThrottleTime);
+                        }, throttleTime);
                     }
 
                     function getCurrentCaretPosition(input) {
