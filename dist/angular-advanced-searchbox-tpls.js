@@ -314,6 +314,20 @@ angular.module('angular-advanced-searchbox', [])
                         restoreModel();
                     }
 
+                    function isKeywordContainedInParameters(keyword) {
+                        var isContained = false;
+                        if (keyword === '') {
+                            return isContained;
+                        }
+
+                        angular.forEach($scope.parameters, function (parameter) {
+                            if (parameter.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
+                                isContained = true;
+                            }
+                        });
+                        return isContained;
+                    }
+
                     function updateModel(command, key, index, value) {
                         var throttleTime = $scope.searchThrottleTime;
                         if (searchThrottleTimer)
@@ -329,9 +343,10 @@ angular.module('angular-advanced-searchbox', [])
                             value: value
                         });
 
-                        if (command === 'change' && key === 'query' && isNaN(value)) {
+                        if (command === 'change' && key === 'query' && isKeywordContainedInParameters(value)) {
                             throttleTime = $scope.searchThrottleTime * 100;
                         }
+
                         searchThrottleTimer = $timeout(function () {
                             angular.forEach(changeBuffer, function (change) {
                                 var searchParam = $filter('filter')($scope.parameters, function (param) { return param.key === key; })[0];
